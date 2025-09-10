@@ -1,0 +1,17 @@
+*.tsbuildinfo
+node_modules
+
+logs
+*.log
+npm-debug.log*
+
+coverage
+*.lcov
+
+build/Release
+
+out
+
+.env
+.env.*
+!.env.example

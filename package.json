@@ -1,0 +1,18 @@
+{
+  "name": "simple.mail",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "format": "prettier . --write",
+    "check": "prettier . --check"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "tsx": "^4.20.5"
+  }
+}

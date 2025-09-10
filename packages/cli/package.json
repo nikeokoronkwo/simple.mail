@@ -1,0 +1,17 @@
+{
+  "name": "@simple.mail/cli",
+  "description": "The CLI entrypoint for running simple.mail via the terminal",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx index.ts"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "nodemailer": "^7.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "@types/nodemailer": "^7.0.1"
+  }
+}
