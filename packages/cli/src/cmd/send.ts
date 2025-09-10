@@ -39,9 +39,11 @@ function transformMergeFile(file: string): {
 /**
  * @todo Add support for custom file formats
  * @todo Add support for custom merge template formats
+ * @todo Launch app TUI if body is not given
  */
 export default new Command("send")
   .description("Send an email!")
+  .addOption(new Option("--launch -l", "Launches the TUI").hideHelp())
   .optionsGroup("Basic Email Options")
   .requiredOption("--to -t <recipients...>", "The email recipients")
   .option("--cc <recipients...>", "Email CC recipients")
