@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "format": "prettier . --write",
-    "check": "prettier . --check"
+    "check": "prettier . --check",
+    "test": "vitest"
   },
   "type": "module",
   "keywords": [],
@@ -13,6 +14,7 @@
   "packageManager": "pnpm@10.15.0",
   "devDependencies": {
     "prettier": "3.6.2",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.5",
+    "vitest": "^3.2.4"
   }
 }
