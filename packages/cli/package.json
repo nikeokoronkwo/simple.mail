@@ -9,6 +9,8 @@
     "db:pull": "drizzle-kit pull"
   },
   "dependencies": {
+    "@std/csv": "jsr:^1.0.6",
+    "@std/yaml": "jsr:^1.0.9",
     "better-sqlite3": "^12.2.0",
     "commander": "^14.0.0",
     "drizzle-orm": "^0.44.5",

@@ -1,42 +1,10 @@
 import { Command, Option } from "commander";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { extname } from "node:path";
+import { templateEngineKinds, transformMergeFile } from "./_shared";
 
 const formats = ["markdown", "html", "text", 'other'] as const;
-const templateEngineKinds = ["handlebars", 'other'] as const;
-const dataFileFormats = ["csv", "json", "yaml", "other"] as const;
-type DataFileFormat = (typeof dataFileFormats)[number];
 type BodyFormat = (typeof formats)[number];
-
-function transformMergeFile(file: string): {
-  file: string;
-  format: DataFileFormat;
-} {
-  switch (extname(file)) {
-    case ".csv":
-      return {
-        file,
-        format: "csv",
-      };
-    case ".json":
-      return {
-        file,
-        format: "json",
-      };
-    case ".yaml":
-    case ".yml":
-      return {
-        file,
-        format: "yaml",
-      };
-    default:
-      return {
-        file,
-        format: "other",
-      };
-  }
-}
 
 /**
  * @todo Add support for custom file formats
