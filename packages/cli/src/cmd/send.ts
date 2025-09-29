@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { templateEngineKinds, transformMergeFile } from "./_shared";
 
-const formats = ["markdown", "html", "text", 'other'] as const;
+const formats = ["markdown", "html", "text", "other"] as const;
 type BodyFormat = (typeof formats)[number];
 
 /**
@@ -19,24 +19,35 @@ export default new Command("send")
   .description("Send an email!")
   .addOption(new Option("--launch -l", "Launches the TUI").hideHelp())
   .optionsGroup("Basic Email Options")
-  .addOption(new Option("--to -t <recipients...>", "The email recipients").makeOptionMandatory())
+  .addOption(
+    new Option(
+      "--to -t <recipients...>",
+      "The email recipients",
+    ),
+  )
   .option("--cc <recipients...>", "Email CC recipients")
   .option("--bcc <recipients...>", "Email BCC recipients")
   .option("--subject -s <subject>", "The subject of the email")
-  .option('--from -f <sender>', 'The email to send it from. If you have more than one email logged onto, then use this option to specify which one. If only one email is logged onto, then that email is selected')
+  .option(
+    "--from -f <sender>",
+    "The email to send it from. If you have more than one email logged onto, then use this option to specify which one. If only one email is logged onto, then that email is selected",
+  )
   .option(
     "--body -b <file>",
     "The file containing the contents of the email. Inferred as markdown by default unless specified",
   )
   .option(
-    '--attachment -a <attachments...>',
-    'Attachments for the given email to send'
+    "--attachment -a <attachments...>",
+    "Attachments for the given email to send",
   )
   .optionsGroup("More Email Features")
-  .option(
-    "--merge <file>",
-    "Perform mail-merge by using the given data file to merge into templates in the body. Supports CSV, JSON, YAML",
-    transformMergeFile,
+  .addOption(
+    new Option(
+      "--merge <file>",
+      "Perform mail-merge by using the given data file to merge into templates in the body. Supports CSV, JSON, YAML. Ensure that your CSV's main index matches the ",
+    ).argParser((v) => {
+      return transformMergeFile(v);
+    }),
   )
   .addOption(
     new Option(
@@ -56,34 +67,54 @@ export default new Command("send")
     "--stylesheet",
     "The CSS/SCSS/SASS Stylesheet to use to style the document, where possible",
   )
-  .optionsGroup('Other Options')
+  .optionsGroup("Other Options")
   .addOption(new Option("--smtp-host <host>").env("SMTP_HOST").hideHelp())
   .addOption(new Option("--smtp-port <port>").env("SMTP_PORT").hideHelp())
   .addOption(new Option("--smtp-user <email>").env("SMTP_USER").hideHelp())
   .addOption(new Option("--smtp-pass <password>").env("SMTP_PASS").hideHelp())
-  .option('--eml <eml>', 'Pass a raw EML file to send an email using the given file')
+  .option(
+    "--eml <eml>",
+    "Pass a raw EML file to send an email using the given file",
+  )
   .action(async (options, command) => {
     // get contents
     console.log(options);
     const { smtpPort, smtpHost, smtpUser, smtpPass } = options;
-    
+
     /** @todo extract from user */
-    
-    const { body, to, cc, bcc, subject, format: bodyFormat, eml, merge } = options;
-    
+
+    const {
+      body,
+      to,
+      cc,
+      bcc,
+      subject,
+      format: bodyFormat,
+      eml,
+      merge,
+    } = options;
+
     if (eml) {
       // send eml file instead
       // return await sendEMLEmail()
     }
-    
+
+    if (!merge && !to) throw new Error("--to is required if not performing mail merge");
+
     if (!body) {
       /** @todo open dialog */
-      throw new Error("Body of email must be provided")
+      throw new Error("Body of email must be provided");
     } else if (!existsSync(body)) {
-      throw new Error(`Could not find given body file: ${body}`)
+      throw new Error(`Could not find given body file: ${body}`);
     }
-    
+
+    // const emails: string[];
+
     // transform body via template
-    const bodyContents = await readFile(body, { encoding: 'utf8' })
-  
+    const bodyContents = await readFile(body, { encoding: "utf8" });
+    if (merge) {
+      // perform mail merge first
+
+      // if cannot find column with email, assume --to is passed and send all emails to --to
+    }
   });

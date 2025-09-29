@@ -5,7 +5,7 @@ export const emailClientTable = sqliteTable("smtp_clients", {
   host: text().notNull().unique(),
   hostName: text(),
   port: int().notNull().default(587),
-  secure: integer({ mode: 'boolean' }).notNull().default(false),
+  secure: integer({ mode: "boolean" }).notNull().default(false),
   username: text().notNull(),
-  password: text().notNull()
+  password: text().notNull(),
 });

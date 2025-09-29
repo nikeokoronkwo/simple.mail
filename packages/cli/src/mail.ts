@@ -1,15 +1,18 @@
 import nodemailer from "nodemailer";
 
-export async function sendEMLEmail(smtp: {
-  host: string;
-  port: string;
-  secure?: boolean;
-  user: string;
-  password: string;
-}, email: {
-  eml: Buffer,
-  to: string[];
-}) {
+export async function sendEMLEmail(
+  smtp: {
+    host: string;
+    port: string;
+    secure?: boolean;
+    user: string;
+    password: string;
+  },
+  email: {
+    eml: Buffer;
+    to: string[];
+  },
+) {
   const transport = nodemailer.createTransport({
     // @ts-ignore
     host: smtp.host,
@@ -27,8 +30,8 @@ export async function sendEMLEmail(smtp: {
       to: email.to,
     },
     raw: {
-      content: email.eml
-    }
+      content: email.eml,
+    },
   });
 
   return {
@@ -52,8 +55,8 @@ export async function sendEmail(
     type: "text" | "html";
     sourceFormat?: {
       contentType: string;
-      raw: string
-    }
+      raw: string;
+    };
     body: string;
     to: string[];
     cc?: string[];
@@ -65,8 +68,8 @@ export async function sendEmail(
     calendar?: {
       content: Buffer;
       name: string;
-      kind: 'REQUEST' | 'REPLY' | 'CANCEL' | 'PUBLISJ';
-    }
+      kind: "REQUEST" | "REPLY" | "CANCEL" | "PUBLISJ";
+    };
   },
 ) {
   const transport = nodemailer.createTransport({
@@ -89,13 +92,17 @@ export async function sendEmail(
     html: email.type === "html" ? email.body : undefined,
     icalEvent: {
       ...email.calendar,
-      filename: email.calendar?.name
+      filename: email.calendar?.name,
     },
-    alternatives: email.sourceFormat ? [{
-      contentType: email.sourceFormat.contentType,
-      content: email.sourceFormat.raw
-    }] : undefined,
-    attachments: email.attachments?.map(a => ({ ...a, filename: a.name }))
+    alternatives: email.sourceFormat
+      ? [
+          {
+            contentType: email.sourceFormat.contentType,
+            content: email.sourceFormat.raw,
+          },
+        ]
+      : undefined,
+    attachments: email.attachments?.map((a) => ({ ...a, filename: a.name })),
   });
 
   return {

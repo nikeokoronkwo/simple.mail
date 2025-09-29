@@ -1,10 +1,9 @@
 import { extname } from "node:path";
 
-export const templateEngineKinds = ["handlebars", 'other'] as const;
-export type TemplateEngine = typeof templateEngineKinds[number];
+export const templateEngineKinds = ["handlebars", "other"] as const;
+export type TemplateEngine = (typeof templateEngineKinds)[number];
 export const dataFileFormats = ["csv", "json", "yaml", "other"] as const;
 export type DataFileFormat = (typeof dataFileFormats)[number];
-
 
 export function transformMergeFile(file: string): {
   file: string;

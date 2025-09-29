@@ -1,5 +1,5 @@
 export interface Converter {
-  base: 'text' | 'html';
+  base: "text" | "html";
   /**
    * The content type of the source, which can be used
    * for rendering alternative displays of mail text
@@ -8,4 +8,6 @@ export interface Converter {
   convert(raw: string): string | Promise<string>;
 }
 
-export function defineConverter(conv: Converter): Converter { return conv; }
+export function defineConverter(conv: Converter): Converter {
+  return conv;
+}
